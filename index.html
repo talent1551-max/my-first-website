@@ -1,168 +1,211 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="به سایت ابزارهای آنلاین خوش آمدید. ابزارهای کاربردی و رایگان برای همه.">
-    <title>دنیای ابزارها | ابزارهای آنلاین رایگان</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Tahoma, Arial, sans-serif;
-            background: #0b1020;
-            color: #f4f6ff;
-        }
-
-        header {
-            padding: 20px;
-            background: #111a30;
-            border-bottom: 1px solid #263451;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-            color: #62e6c4;
-            font-size: 27px;
-        }
-
-        nav {
-            margin-top: 15px;
-        }
-
-        nav a {
-            color: #dce5ff;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 14px;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 65px 20px 45px;
-        }
-
-        .hero h2 {
-            font-size: 30px;
-            margin-bottom: 15px;
-        }
-
-        .hero p {
-            color: #aab6d3;
-            line-height: 2;
-            max-width: 550px;
-            margin: auto;
-        }
-
-        .tools {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 18px;
-        }
-
-        .card {
-            background: #141e35;
-            border: 1px solid #293957;
-            border-radius: 16px;
-            padding: 25px;
-            text-align: center;
-        }
-
-        .card h3 {
-            color: #62e6c4;
-        }
-
-        .card p {
-            color: #b8c3dd;
-            line-height: 1.9;
-        }
-
-        .card button {
-            background: #62e6c4;
-            color: #0b1020;
-            border: 0;
-            border-radius: 9px;
-            padding: 11px 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .card button:hover {
-            background: #42c9a8;
-        }
-
-        footer {
-            text-align: center;
-            padding: 25px;
-            margin-top: 30px;
-            color: #9caac8;
-            border-top: 1px solid #263451;
-            font-size: 13px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>کریپتوویژن | تحلیل ارز دیجیتال</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080e1b;color:#edf3ff;font-family:Tahoma,Arial,sans-serif}
+header{padding:24px 16px;background:#111d35;text-align:center;border-bottom:1px solid #293957}
+header h1{margin:0;color:#67e8c0;font-size:27px}
+header p{color:#aab9d2;font-size:13px}
+main{max-width:850px;margin:auto;padding:16px}
+.card{background:#111b2d;border:1px solid #293957;border-radius:16px;padding:16px;margin-bottom:16px}
+h2{font-size:17px;margin-top:0}
+select,input,button{font:inherit;border-radius:9px;padding:11px;border:1px solid #344563}
+select,input{background:#091222;color:white}
+button{background:#79a0ff;color:#081020;font-weight:bold;cursor:pointer}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row select{flex:1;min-width:150px}
+.price{font-size:27px;font-weight:bold;direction:ltr;text-align:right;margin:12px 0}
+.muted{font-size:12px;color:#9aabc8}
+.green{color:#32d6a0}.red{color:#ff7180}
+canvas{width:100%;height:230px;background:#091222;border-radius:10px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.metric{padding:12px;background:#091222;border-radius:10px}
+.metric strong{display:block;font-size:17px}
+#analysis{line-height:2;font-size:13px}
+#answer{white-space:pre-wrap;line-height:1.9;font-size:13px;color:#d5e2fa}
+footer{text-align:center;color:#8d9db8;font-size:11px;padding:20px}
+@media(max-width:500px){.metrics{grid-template-columns:1fr}.price{font-size:23px}}
+</style>
 </head>
 <body>
-
 <header>
-    <h1>دنیای ابزارها ⚡</h1>
-    <nav>
-        <a href="#home">صفحه اصلی</a>
-        <a href="#tools">ابزارها</a>
-        <a href="#about">درباره ما</a>
-    </nav>
+<h1>₿ کریپتوویژن</h1>
+<p>داشبورد هوشمند بررسی بازار ارزهای دیجیتال</p>
 </header>
+<main>
+<div class="card">
+<h2>📈 قیمت بازار</h2>
+<div class="row">
+<select id="coin">
+<option value="BTCUSDT">بیت‌کوین BTC</option>
+<option value="ETHUSDT">اتریوم ETH</option>
+<option value="BNBUSDT">بایننس‌کوین BNB</option>
+<option value="SOLUSDT">سولانا SOL</option>
+<option value="XRPUSDT">ریپل XRP</option>
+<option value="DOGEUSDT">دوج‌کوین DOGE</option>
+<option value="ADAUSDT">کاردانو ADA</option>
+<option value="TRXUSDT">ترون TRX</option>
+</select>
+<button id="refresh">بروزرسانی</button>
+</div>
+<div class="price" id="price">در حال دریافت…</div>
+<div id="change" class="muted">در حال اتصال به بازار</div>
+<p class="muted" id="updated"></p>
+</div>
 
-<section class="hero" id="home">
-    <h2>به دنیای ابزارهای آنلاین خوش آمدی!</h2>
-    <p>
-        ابزارهای کاربردی، سریع و رایگان را در یک جا پیدا کن.
-        اینجا قراره هر روز امکانات جدیدی اضافه بشه.
-    </p>
-</section>
+<div class="card">
+<h2>📊 نمودار قیمت</h2>
+<div class="row">
+<button data-i="1h">۱ ساعته</button>
+<button data-i="4h">۴ ساعته</button>
+<button data-i="1d">روزانه</button>
+</div>
+<br>
+<canvas id="chart"></canvas>
+</div>
 
-<section class="tools" id="tools">
-    <div class="card">
-        <h3>🔢 تبدیل اعداد</h3>
-        <p>به‌زودی ابزاری برای تبدیل اعداد فارسی و انگلیسی اضافه می‌شود.</p>
-        <button onclick="convertNumbers()">امتحان کن</button>
-    </div>
+<div class="card">
+<h2>🧠 تحلیل تکنیکال</h2>
+<div class="metrics">
+<div class="metric"><span class="muted">شاخص RSI</span><strong id="rsi">—</strong></div>
+<div class="metric"><span class="muted">روند کوتاه‌مدت</span><strong id="trend">—</strong></div>
+<div class="metric"><span class="muted">تغییر روزانه</span><strong id="daily">—</strong></div>
+</div>
+<p id="analysis">در حال محاسبه تحلیل…</p>
+</div>
 
-    <div class="card">
-        <h3>📝 ابزار متن</h3>
-        <p>ابزارهای کاربردی برای کار با متن در راه هستند.</p>
-        <button onclick="alert('ابزار متن به‌زودی اضافه می‌شود!')">مشاهده</button>
-    </div>
-
-    <div class="card">
-        <h3>🎮 ابزار گیمرها</h3>
-        <p>محاسبه‌گرها و ابزارهای مخصوص بازی‌ها در راه‌اند.</p>
-        <button onclick="alert('ابزارهای گیمینگ به‌زودی اضافه می‌شوند!')">مشاهده</button>
-    </div>
-</section>
-
-<footer id="about">
-    ساخته‌شده با ❤️ | دنیای ابزارها
+<div class="card">
+<h2>🤖 دستیار آموزشی ارز دیجیتال</h2>
+<p class="muted">درباره شاخص‌ها و تحلیل بازار سؤال بپرس.</p>
+<div class="row">
+<input id="question" placeholder="مثلاً RSI چیست؟" style="flex:1;min-width:170px">
+<button id="ask">پرسیدن</button>
+</div>
+<p id="answer">سلام! سؤال خودت را وارد کن. این نسخه پاسخ‌های آموزشی ساده دارد و هنوز به مدل هوش مصنوعی واقعی متصل نیست.</p>
+</div>
+</main>
+<footer>
+داده‌ها از API عمومی بازار دریافت می‌شوند. این ابزار توصیه مالی نیست و تحلیل‌ها قطعی نیستند.
 </footer>
 
 <script>
-function convertNumbers() {
-    const input = prompt("یک عدد انگلیسی وارد کن:");
-    if (input === null) return;
+const $=id=>document.getElementById(id);
+let interval='1h',busy=false,prices=[],lastChange=0;
 
-    const persianDigits = input.replace(/[0-9]/g, digit =>
-        "۰۱۲۳۴۵۶۷۸۹"[Number(digit)]
-    );
-
-    alert("عدد فارسی: " + persianDigits);
+async function api(url){
+ const response=await fetch(url);
+ if(!response.ok)throw Error('API error');
+ return response.json();
 }
+function fmt(n){
+ return Number(n).toLocaleString('en-US',{maximumFractionDigits:Number(n)<1?6:2});
+}
+function pct(n){
+ return (Number(n)>0?'+':'')+Number(n).toFixed(2)+'%';
+}
+async function load(){
+ if(busy)return;
+ busy=true;
+ const symbol=$('coin').value;
+ try{
+  const t=await api('https://api.binance.com/api/v3/ticker/24hr?symbol='+symbol);
+  lastChange=Number(t.priceChangePercent);
+  $('price').textContent='$'+fmt(t.lastPrice);
+  $('change').textContent='تغییر ۲۴ ساعت: '+pct(lastChange);
+  $('change').className=lastChange>=0?'green':'red';
+  $('daily').textContent=pct(lastChange);
+  $('daily').className=lastChange>=0?'green':'red';
+  $('updated').textContent='آخرین بروزرسانی: '+new Date().toLocaleTimeString('fa-IR');
+  await loadChart();
+ }catch(e){
+  $('change').textContent='داده دریافت نشد؛ اینترنت را بررسی کن.';
+ }
+ busy=false;
+}
+async function loadChart(){
+ const symbol=$('coin').value;
+ try{
+  const rows=await api('https://api.binance.com/api/v3/klines?symbol='+symbol+'&interval='+interval+'&limit=100');
+  prices=rows.map(x=>Number(x[4]));
+  draw(prices);
+  const r=calcRSI(prices);
+  $('rsi').textContent=r===null?'—':r.toFixed(1);
+  const a=avg(prices,7),b=avg(prices,25);
+  const trend=a&&b?(a>b?'صعودی':'نزولی'):'نامشخص';
+  $('trend').textContent=trend;
+  $('trend').className=trend==='صعودی'?'green':trend==='نزولی'?'red':'';
+  let msg=r===null?'داده کافی نیست.':r>=70?'RSI بالای ۷۰ است؛ احتمال داغ‌شدن حرکت قیمت وجود دارد.':r<=30?'RSI زیر ۳۰ است؛ فشار فروش ممکن است زیاد باشد.':'RSI در محدوده میانی قرار دارد.';
+  $('analysis').textContent='بر اساس میانگین ۷ و ۲۵ کندل، روند کوتاه‌مدت '+trend+' است. '+msg+' این شاخص‌ها آینده قیمت را تضمین نمی‌کنند.';
+ }catch(e){
+  $('analysis').textContent='نمودار دریافت نشد؛ اتصال اینترنت یا دسترسی به API را بررسی کن.';
+ }
+}
+function avg(a,n){
+ if(a.length<n)return null;
+ return a.slice(-n).reduce((x,y)=>x+y,0)/n;
+}
+function calcRSI(a){
+ if(a.length<15)return null;
+ let g=0,l=0;
+ for(let i=a.length-14;i<a.length;i++){
+  let d=a[i]-a[i-1];
+  if(d>0)g+=d;else l-=d;
+ }
+ g/=14;l/=14;
+ return l===0?100:100-100/(1+g/l);
+}
+function draw(a){
+ const c=$('chart'),r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;
+ c.width=r.width*d;c.height=230*d;
+ const ctx=c.getContext('2d');
+ ctx.setTransform(d,0,0,d,0,0);
+ const w=r.width,h=230,p=15;
+ ctx.clearRect(0,0,w,h);
+ if(!a.length)return;
+ let min=Math.min(...a),max=Math.max(...a);
+ if(min===max){min*=.99;max*=1.01}
+ for(let i=0;i<5;i++){
+  let y=p+i*(h-2*p)/4;
+  ctx.beginPath();ctx.strokeStyle='#1d2b43';
+  ctx.moveTo(p,y);ctx.lineTo(w-p,y);ctx.stroke();
+ }
+ ctx.beginPath();
+ a.forEach((v,i)=>{
+  const x=p+i*(w-2*p)/(a.length-1);
+  const y=h-p-(v-min)/(max-min)*(h-2*p);
+  if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+ });
+ ctx.strokeStyle=a[a.length-1]>=a[0]?'#32d6a0':'#ff7180';
+ ctx.lineWidth=2;ctx.stroke();
+ ctx.fillStyle='#9aabc8';ctx.font='11px Tahoma';
+ ctx.fillText('$'+fmt(max),p,12);
+ ctx.fillText('$'+fmt(min),p,h-3);
+}
+$('refresh').onclick=load;
+$('coin').onchange=load;
+document.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{
+ interval=b.dataset.i;
+ document.querySelectorAll('[data-i]').forEach(x=>x.style.opacity=x===b?'1':'.7');
+ load();
+});
+window.onresize=()=>draw(prices);
+$('ask').onclick=()=>{
+ const q=$('question').value.trim().toLowerCase();
+ if(!q)return;
+ let answer='در این نسخه دستیار محدود است و هنوز از مدل هوش مصنوعی واقعی استفاده نمی‌کند. هیچ شاخصی به‌تنهایی جهت بازار را تضمین نمی‌کند.';
+ if(q.includes('rsi'))answer='RSI شاخصی بین صفر تا صد برای سنجش قدرت حرکت قیمت است. معمولاً بالای ۷۰ را محدوده داغ و زیر ۳۰ را محدوده فشار فروش می‌دانند؛ اما این اعداد به‌تنهایی سیگنال خرید یا فروش نیستند.';
+ else if(q.includes('macd'))answer='MACD از میانگین‌های متحرک نمایی استفاده می‌کند تا مومنتوم و تغییر احتمالی روند را بررسی کند. آن را همراه حجم و ساختار قیمت ببین.';
+ else if(q.includes('روند')||q.includes('تحلیل'))answer=$('analysis').textContent;
+ else if(q.includes('بخر')||q.includes('بفروش')||q.includes('خرید')||q.includes('فروش'))answer='نمی‌توانم سود یا آینده قیمت را تضمین کنم. پیش از هر تصمیمی ریسک و احتمال ضرر را بررسی کن و صرفاً بر اساس یک شاخص تصمیم نگیر.';
+ $('answer').textContent=answer;
+};
+$('question').addEventListener('keydown',e=>{if(e.key==='Enter')$('ask').click()});
+load();
+setInterval(load,60000);
 </script>
-
 </body>
 </html>
