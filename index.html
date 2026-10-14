@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="به سایت ابزارهای آنلاین خوش آمدید. ابزارهای کاربردی و رایگان برای همه.">
+    <title>دنیای ابزارها | ابزارهای آنلاین رایگان</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: #0b1020;
+            color: #f4f6ff;
+        }
+
+        header {
+            padding: 20px;
+            background: #111a30;
+            border-bottom: 1px solid #263451;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #62e6c4;
+            font-size: 27px;
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav a {
+            color: #dce5ff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 65px 20px 45px;
+        }
+
+        .hero h2 {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #aab6d3;
+            line-height: 2;
+            max-width: 550px;
+            margin: auto;
+        }
+
+        .tools {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: #141e35;
+            border: 1px solid #293957;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card h3 {
+            color: #62e6c4;
+        }
+
+        .card p {
+            color: #b8c3dd;
+            line-height: 1.9;
+        }
+
+        .card button {
+            background: #62e6c4;
+            color: #0b1020;
+            border: 0;
+            border-radius: 9px;
+            padding: 11px 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .card button:hover {
+            background: #42c9a8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 30px;
+            color: #9caac8;
+            border-top: 1px solid #263451;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>دنیای ابزارها ⚡</h1>
+    <nav>
+        <a href="#home">صفحه اصلی</a>
+        <a href="#tools">ابزارها</a>
+        <a href="#about">درباره ما</a>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <h2>به دنیای ابزارهای آنلاین خوش آمدی!</h2>
+    <p>
+        ابزارهای کاربردی، سریع و رایگان را در یک جا پیدا کن.
+        اینجا قراره هر روز امکانات جدیدی اضافه بشه.
+    </p>
+</section>
+
+<section class="tools" id="tools">
+    <div class="card">
+        <h3>🔢 تبدیل اعداد</h3>
+        <p>به‌زودی ابزاری برای تبدیل اعداد فارسی و انگلیسی اضافه می‌شود.</p>
+        <button onclick="convertNumbers()">امتحان کن</button>
+    </div>
+
+    <div class="card">
+        <h3>📝 ابزار متن</h3>
+        <p>ابزارهای کاربردی برای کار با متن در راه هستند.</p>
+        <button onclick="alert('ابزار متن به‌زودی اضافه می‌شود!')">مشاهده</button>
+    </div>
+
+    <div class="card">
+        <h3>🎮 ابزار گیمرها</h3>
+        <p>محاسبه‌گرها و ابزارهای مخصوص بازی‌ها در راه‌اند.</p>
+        <button onclick="alert('ابزارهای گیمینگ به‌زودی اضافه می‌شوند!')">مشاهده</button>
+    </div>
+</section>
+
+<footer id="about">
+    ساخته‌شده با ❤️ | دنیای ابزارها
+</footer>
+
+<script>
+function convertNumbers() {
+    const input = prompt("یک عدد انگلیسی وارد کن:");
+    if (input === null) return;
+
+    const persianDigits = input.replace(/[0-9]/g, digit =>
+        "۰۱۲۳۴۵۶۷۸۹"[Number(digit)]
+    );
+
+    alert("عدد فارسی: " + persianDigits);
+}
+</script>
+
+</body>
+</html>
