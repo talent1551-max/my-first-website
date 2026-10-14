@@ -2,210 +2,255 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>کریپتوویژن | تحلیل ارز دیجیتال</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>کریپتوویژن | تحلیل بازار ارز دیجیتال</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080e1b;color:#edf3ff;font-family:Tahoma,Arial,sans-serif}
-header{padding:24px 16px;background:#111d35;text-align:center;border-bottom:1px solid #293957}
-header h1{margin:0;color:#67e8c0;font-size:27px}
-header p{color:#aab9d2;font-size:13px}
-main{max-width:850px;margin:auto;padding:16px}
-.card{background:#111b2d;border:1px solid #293957;border-radius:16px;padding:16px;margin-bottom:16px}
-h2{font-size:17px;margin-top:0}
-select,input,button{font:inherit;border-radius:9px;padding:11px;border:1px solid #344563}
-select,input{background:#091222;color:white}
-button{background:#79a0ff;color:#081020;font-weight:bold;cursor:pointer}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.row select{flex:1;min-width:150px}
-.price{font-size:27px;font-weight:bold;direction:ltr;text-align:right;margin:12px 0}
-.muted{font-size:12px;color:#9aabc8}
-.green{color:#32d6a0}.red{color:#ff7180}
-canvas{width:100%;height:230px;background:#091222;border-radius:10px}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.metric{padding:12px;background:#091222;border-radius:10px}
-.metric strong{display:block;font-size:17px}
-#analysis{line-height:2;font-size:13px}
-#answer{white-space:pre-wrap;line-height:1.9;font-size:13px;color:#d5e2fa}
-footer{text-align:center;color:#8d9db8;font-size:11px;padding:20px}
-@media(max-width:500px){.metrics{grid-template-columns:1fr}.price{font-size:23px}}
+body{margin:0;background:#0b1020;color:#edf2ff;font-family:Tahoma,Arial,sans-serif}
+header{padding:24px 16px;background:linear-gradient(135deg,#17264b,#111827);border-bottom:1px solid #293655}
+.container{max-width:1050px;margin:auto;padding:16px}
+h1{margin:0 0 10px;color:#71e6c0;font-size:27px}
+p{color:#aebbd2;line-height:1.9}
+.badge{display:inline-block;background:#193b36;color:#79f0c5;border-radius:20px;padding:7px 12px;font-size:12px}
+.panel{background:#131b2e;border:1px solid #26334e;border-radius:16px;padding:16px;margin:16px 0}
+h2{font-size:18px;margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.coin{background:#10182a;border:1px solid #2a3854;padding:16px;border-radius:13px}
+.coin-name{color:#aebbd2;font-size:13px}
+.price{font-size:21px;font-weight:bold;margin:12px 0;color:#fff;overflow-wrap:anywhere}
+.small{font-size:12px;color:#93a4bf}
+button,select,input{font-family:inherit;border-radius:10px;border:1px solid #344460;padding:12px;background:#10182a;color:#fff;font-size:14px}
+button{background:#16a982;border:0;color:#061b17;font-weight:bold;cursor:pointer}
+button:active{opacity:.8}
+.controls{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}
+.controls select{flex:1;min-width:140px}
+canvas{width:100%;height:230px;display:block}
+.stat{background:#10182a;border-radius:10px;padding:12px;margin-top:12px;line-height:2}
+#status{font-size:13px;color:#ffc96b;line-height:2}
+input{width:100%;margin:8px 0}
+#answer{white-space:pre-wrap;line-height:2;color:#d9e6fa}
+footer{text-align:center;padding:25px;color:#7e91ad;font-size:12px}
 </style>
 </head>
 <body>
 <header>
-<h1>₿ کریپتوویژن</h1>
-<p>داشبورد هوشمند بررسی بازار ارزهای دیجیتال</p>
+ <div class="container">
+  <h1>₿ کریپتوویژن</h1>
+  <p>قیمت ارزهای دیجیتال، نمودار بازار و تحلیل تکنیکال در یک جا</p>
+  <span class="badge">نسخه ۳ · آزمایشی</span>
+ </div>
 </header>
-<main>
-<div class="card">
-<h2>📈 قیمت بازار</h2>
-<div class="row">
-<select id="coin">
-<option value="BTCUSDT">بیت‌کوین BTC</option>
-<option value="ETHUSDT">اتریوم ETH</option>
-<option value="BNBUSDT">بایننس‌کوین BNB</option>
-<option value="SOLUSDT">سولانا SOL</option>
-<option value="XRPUSDT">ریپل XRP</option>
-<option value="DOGEUSDT">دوج‌کوین DOGE</option>
-<option value="ADAUSDT">کاردانو ADA</option>
-<option value="TRXUSDT">ترون TRX</option>
-</select>
-<button id="refresh">بروزرسانی</button>
-</div>
-<div class="price" id="price">در حال دریافت…</div>
-<div id="change" class="muted">در حال اتصال به بازار</div>
-<p class="muted" id="updated"></p>
-</div>
 
-<div class="card">
-<h2>📊 نمودار قیمت</h2>
-<div class="row">
-<button data-i="1h">۱ ساعته</button>
-<button data-i="4h">۴ ساعته</button>
-<button data-i="1d">روزانه</button>
-</div>
-<br>
-<canvas id="chart"></canvas>
-</div>
+<main class="container">
+ <section class="panel">
+  <h2>📊 قیمت بازار</h2>
+  <div id="status">در حال دریافت اطلاعات از نوبیتکس...</div>
+  <div class="grid" id="coins"></div>
+  <p class="small">قیمت‌ها برحسب تومان نمایش داده می‌شوند. منبع داده: بازار نوبیتکس. ممکن است بعضی ارزها در دسترس نباشند.</p>
+  <button id="refresh">🔄 به‌روزرسانی قیمت‌ها</button>
+ </section>
 
-<div class="card">
-<h2>🧠 تحلیل تکنیکال</h2>
-<div class="metrics">
-<div class="metric"><span class="muted">شاخص RSI</span><strong id="rsi">—</strong></div>
-<div class="metric"><span class="muted">روند کوتاه‌مدت</span><strong id="trend">—</strong></div>
-<div class="metric"><span class="muted">تغییر روزانه</span><strong id="daily">—</strong></div>
-</div>
-<p id="analysis">در حال محاسبه تحلیل…</p>
-</div>
+ <section class="panel">
+  <h2>📈 نمودار قیمت</h2>
+  <div class="controls">
+   <select id="symbol">
+    <option value="BTCIRT">بیت‌کوین</option>
+    <option value="ETHIRT">اتریوم</option>
+    <option value="LTCIRT">لایت‌کوین</option>
+    <option value="XRPIRT">ریپل</option>
+    <option value="TRXIRT">ترون</option>
+    <option value="DOGEIRT">دوج‌کوین</option>
+   </select>
+   <button id="draw">نمایش نمودار</button>
+  </div>
+  <canvas id="chart" width="900" height="300"></canvas>
+  <div id="analysis" class="stat">برای مشاهده تحلیل، ابتدا داده‌ها را دریافت کن.</div>
+  <p class="small">نمودار این نسخه، تغییرات قیمت ثبت‌شده از زمان باز بودن صفحه را نشان می‌دهد؛ تاریخچه کامل بازار نیست.</p>
+ </section>
 
-<div class="card">
-<h2>🤖 دستیار آموزشی ارز دیجیتال</h2>
-<p class="muted">درباره شاخص‌ها و تحلیل بازار سؤال بپرس.</p>
-<div class="row">
-<input id="question" placeholder="مثلاً RSI چیست؟" style="flex:1;min-width:170px">
-<button id="ask">پرسیدن</button>
-</div>
-<p id="answer">سلام! سؤال خودت را وارد کن. این نسخه پاسخ‌های آموزشی ساده دارد و هنوز به مدل هوش مصنوعی واقعی متصل نیست.</p>
-</div>
+ <section class="panel">
+  <h2>🤖 دستیار کریپتو</h2>
+  <p>سؤالت را درباره ارز دیجیتال، نمودار یا مفاهیم بازار بنویس.</p>
+  <input id="question" placeholder="مثلاً RSI چیست؟">
+  <button id="ask">پاسخ به سؤال</button>
+  <div id="answer"></div>
+  <p class="small">این نسخه پاسخ‌گوی آموزشی ساده است، نه هوش مصنوعی متصل به اینترنت. برای هوش مصنوعی واقعی باید یک سرویس امن جداگانه متصل شود.</p>
+ </section>
+
+ <section class="panel">
+  <h2>⚠️ توجه به ریسک</h2>
+  <p>این سایت ابزار آموزشی است. تحلیل‌های ساده آن تضمینی برای افزایش قیمت یا سود نیستند. قبل از هر تصمیم مالی، اطلاعات را از چند منبع بررسی کن.</p>
+ </section>
 </main>
-<footer>
-داده‌ها از API عمومی بازار دریافت می‌شوند. این ابزار توصیه مالی نیست و تحلیل‌ها قطعی نیستند.
-</footer>
+<footer>CryptoVision · ساخته‌شده برای یادگیری و بررسی بازار</footer>
 
 <script>
-const $=id=>document.getElementById(id);
-let interval='1h',busy=false,prices=[],lastChange=0;
+const symbols = [
+ {s:"BTCIRT",name:"بیت‌کوین",en:"BTC"},
+ {s:"ETHIRT",name:"اتریوم",en:"ETH"},
+ {s:"LTCIRT",name:"لایت‌کوین",en:"LTC"},
+ {s:"XRPIRT",name:"ریپل",en:"XRP"},
+ {s:"TRXIRT",name:"ترون",en:"TRX"},
+ {s:"DOGEIRT",name:"دوج‌کوین",en:"DOGE"}
+];
 
-async function api(url){
+const history = {};
+let latest = {};
+let busy = false;
+
+function money(n){
+ if(!Number.isFinite(n)) return "نامشخص";
+ return Math.round(n).toLocaleString("fa-IR");
+}
+
+async function getPrice(symbol){
+ const url="https://api.nobitex.ir/v3/orderbook/"+encodeURIComponent(symbol);
  const response=await fetch(url);
- if(!response.ok)throw Error('API error');
- return response.json();
+ if(!response.ok) throw new Error("HTTP "+response.status);
+ const data=await response.json();
+ const p=Number(data.lastTradePrice);
+ if(data.status==="failed" || !Number.isFinite(p) || p<=0){
+  throw new Error("قیمت معتبر دریافت نشد");
+ }
+ return p;
 }
-function fmt(n){
- return Number(n).toLocaleString('en-US',{maximumFractionDigits:Number(n)<1?6:2});
+
+function renderCoins(){
+ const root=document.getElementById("coins");
+ root.innerHTML="";
+ for(const c of symbols){
+  const price=latest[c.s];
+  const el=document.createElement("div");
+  el.className="coin";
+  const name=document.createElement("div");
+  name.className="coin-name";
+  name.textContent=c.name+" · "+c.en;
+  const value=document.createElement("div");
+  value.className="price";
+  value.textContent=price ? money(price/10)+" تومان" : "دریافت نشد";
+  const note=document.createElement("div");
+  note.className="small";
+  note.textContent=price ? "آخرین معامله دریافت‌شده" : "برای تلاش دوباره، به‌روزرسانی را بزن";
+  el.append(name,value,note);
+  root.appendChild(el);
+ }
 }
-function pct(n){
- return (Number(n)>0?'+':'')+Number(n).toFixed(2)+'%';
-}
-async function load(){
+
+async function refreshPrices(){
  if(busy)return;
  busy=true;
- const symbol=$('coin').value;
- try{
-  const t=await api('https://api.binance.com/api/v3/ticker/24hr?symbol='+symbol);
-  lastChange=Number(t.priceChangePercent);
-  $('price').textContent='$'+fmt(t.lastPrice);
-  $('change').textContent='تغییر ۲۴ ساعت: '+pct(lastChange);
-  $('change').className=lastChange>=0?'green':'red';
-  $('daily').textContent=pct(lastChange);
-  $('daily').className=lastChange>=0?'green':'red';
-  $('updated').textContent='آخرین بروزرسانی: '+new Date().toLocaleTimeString('fa-IR');
-  await loadChart();
- }catch(e){
-  $('change').textContent='داده دریافت نشد؛ اینترنت را بررسی کن.';
+ document.getElementById("status").textContent="در حال دریافت قیمت‌ها...";
+ document.getElementById("refresh").disabled=true;
+ let success=0;
+ for(const c of symbols){
+  try{
+   const p=await getPrice(c.s);
+   latest[c.s]=p;
+   if(!history[c.s])history[c.s]=[];
+   history[c.s].push({time:Date.now(),price:p/10});
+   if(history[c.s].length>60)history[c.s].shift();
+   success++;
+  }catch(e){
+   console.log("خطا در دریافت "+c.s,e);
+  }
  }
+ renderCoins();
+ document.getElementById("status").textContent=
+ success
+ ? "قیمت "+success+" ارز دریافت شد. آخرین بررسی: "+new Date().toLocaleTimeString("fa-IR")
+ : "قیمت دریافت نشد. ممکن است اتصال API یا دسترسی مرورگر محدود باشد.";
+ drawChart();
  busy=false;
+ document.getElementById("refresh").disabled=false;
 }
-async function loadChart(){
- const symbol=$('coin').value;
- try{
-  const rows=await api('https://api.binance.com/api/v3/klines?symbol='+symbol+'&interval='+interval+'&limit=100');
-  prices=rows.map(x=>Number(x[4]));
-  draw(prices);
-  const r=calcRSI(prices);
-  $('rsi').textContent=r===null?'—':r.toFixed(1);
-  const a=avg(prices,7),b=avg(prices,25);
-  const trend=a&&b?(a>b?'صعودی':'نزولی'):'نامشخص';
-  $('trend').textContent=trend;
-  $('trend').className=trend==='صعودی'?'green':trend==='نزولی'?'red':'';
-  let msg=r===null?'داده کافی نیست.':r>=70?'RSI بالای ۷۰ است؛ احتمال داغ‌شدن حرکت قیمت وجود دارد.':r<=30?'RSI زیر ۳۰ است؛ فشار فروش ممکن است زیاد باشد.':'RSI در محدوده میانی قرار دارد.';
-  $('analysis').textContent='بر اساس میانگین ۷ و ۲۵ کندل، روند کوتاه‌مدت '+trend+' است. '+msg+' این شاخص‌ها آینده قیمت را تضمین نمی‌کنند.';
- }catch(e){
-  $('analysis').textContent='نمودار دریافت نشد؛ اتصال اینترنت یا دسترسی به API را بررسی کن.';
- }
-}
-function avg(a,n){
- if(a.length<n)return null;
- return a.slice(-n).reduce((x,y)=>x+y,0)/n;
-}
-function calcRSI(a){
- if(a.length<15)return null;
- let g=0,l=0;
- for(let i=a.length-14;i<a.length;i++){
-  let d=a[i]-a[i-1];
-  if(d>0)g+=d;else l-=d;
- }
- g/=14;l/=14;
- return l===0?100:100-100/(1+g/l);
-}
-function draw(a){
- const c=$('chart'),r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;
- c.width=r.width*d;c.height=230*d;
- const ctx=c.getContext('2d');
- ctx.setTransform(d,0,0,d,0,0);
- const w=r.width,h=230,p=15;
+
+function drawChart(){
+ const canvas=document.getElementById("chart");
+ const ctx=canvas.getContext("2d");
+ const symbol=document.getElementById("symbol").value;
+ const points=history[symbol]||[];
+ const w=canvas.width,h=canvas.height;
  ctx.clearRect(0,0,w,h);
- if(!a.length)return;
- let min=Math.min(...a),max=Math.max(...a);
- if(min===max){min*=.99;max*=1.01}
- for(let i=0;i<5;i++){
-  let y=p+i*(h-2*p)/4;
-  ctx.beginPath();ctx.strokeStyle='#1d2b43';
-  ctx.moveTo(p,y);ctx.lineTo(w-p,y);ctx.stroke();
+ ctx.strokeStyle="#25334b";
+ ctx.fillStyle="#9aacc7";
+ ctx.font="14px Tahoma";
+ for(let i=1;i<5;i++){
+  const y=i*h/5;
+  ctx.beginPath();ctx.moveTo(35,y);ctx.lineTo(w-15,y);ctx.stroke();
  }
+ if(points.length===0){
+  ctx.fillText("هنوز داده‌ای برای رسم نمودار وجود ندارد",w/2-200,h/2);
+  return;
+ }
+ if(points.length===1){
+  ctx.fillText("برای مشاهده تغییرات، چند بار قیمت را به‌روزرسانی کن",w/2-250,h/2);
+  return;
+ }
+ const vals=points.map(p=>p.price);
+ const min=Math.min(...vals),max=Math.max(...vals);
+ const range=max-min||1;
+ ctx.strokeStyle="#53e0b4";
+ ctx.lineWidth=3;
  ctx.beginPath();
- a.forEach((v,i)=>{
-  const x=p+i*(w-2*p)/(a.length-1);
-  const y=h-p-(v-min)/(max-min)*(h-2*p);
+ points.forEach((p,i)=>{
+  const x=35+i*(w-60)/(points.length-1);
+  const y=h-25-((p.price-min)/range)*(h-55);
   if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
  });
- ctx.strokeStyle=a[a.length-1]>=a[0]?'#32d6a0':'#ff7180';
- ctx.lineWidth=2;ctx.stroke();
- ctx.fillStyle='#9aabc8';ctx.font='11px Tahoma';
- ctx.fillText('$'+fmt(max),p,12);
- ctx.fillText('$'+fmt(min),p,h-3);
+ ctx.stroke();
+ ctx.fillStyle="#edf2ff";
+ ctx.fillText("بیشینه: "+money(max)+" تومان",40,22);
+ ctx.fillText("کمینه: "+money(min)+" تومان",40,45);
+ analyze(symbol,vals);
 }
-$('refresh').onclick=load;
-$('coin').onchange=load;
-document.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{
- interval=b.dataset.i;
- document.querySelectorAll('[data-i]').forEach(x=>x.style.opacity=x===b?'1':'.7');
- load();
+
+function analyze(symbol,vals){
+ const box=document.getElementById("analysis");
+ const last=vals[vals.length-1];
+ const first=vals[0];
+ let trend="داده کافی برای تشخیص روند وجود ندارد.";
+ if(vals.length>=3){
+  const change=((last-first)/first)*100;
+  trend="تغییر قیمت ثبت‌شده در این نشست: "+change.toFixed(2)+"٪. ";
+  trend+=change>0.2?"روند این بازه صعودی بوده است.":change< -0.2?"روند این بازه نزولی بوده است.":"تغییر این بازه محدود بوده است.";
+ }
+ let rsiText="RSI برای محاسبه به داده بیشتری نیاز دارد.";
+ if(vals.length>=15){
+  let gain=0,loss=0;
+  for(let i=vals.length-14;i<vals.length;i++){
+   const diff=vals[i]-vals[i-1];
+   if(diff>0)gain+=diff;else loss-=diff;
+  }
+  const rs=loss===0?100:gain/loss;
+  const rsi=100-(100/(1+rs));
+  rsiText="RSI تقریبی این نشست: "+rsi.toFixed(1)+
+   (rsi>70+" "?"":"");
+  if(rsi>=70)rsiText+="؛ در محدوده‌ای است که معمولاً اشباع خرید نامیده می‌شود.";
+  else if(rsi<=30)rsiText+="؛ در محدوده‌ای است که معمولاً اشباع فروش نامیده می‌شود.";
+  else rsiText+="؛ در محدوده میانی قرار دارد.";
+ }
+ box.textContent=trend+"\n"+rsiText+"\nاین محاسبه محدود به داده‌های همین نشست است و سیگنال خرید یا فروش محسوب نمی‌شود.";
+}
+
+document.getElementById("refresh").addEventListener("click",refreshPrices);
+document.getElementById("draw").addEventListener("click",drawChart);
+document.getElementById("symbol").addEventListener("change",drawChart);
+
+document.getElementById("ask").addEventListener("click",()=>{
+ const q=document.getElementById("question").value.trim().toLowerCase();
+ let a="برای پاسخ دقیق‌تر، درباره قیمت، ریسک، نمودار یا یک مفهوم مشخص سؤال کن.";
+ if(!q){a="اول سؤالت را بنویس.";}
+ else if(q.includes("rsi"))a="RSI شاخصی بین صفر و صد برای بررسی قدرت حرکت قیمت است. بالای ۷۰ گاهی اشباع خرید و زیر ۳۰ گاهی اشباع فروش تلقی می‌شود؛ این محدوده‌ها به‌تنهایی سیگنال قطعی نیستند.";
+ else if(q.includes("بیت")||q.includes("btc"))a="برای بررسی بیت‌کوین، قیمت دریافت‌شده و نمودار همین صفحه را ببین. داده این نسخه محدود است و برای نتیجه‌گیری باید بازه زمانی و منابع بیشتری بررسی شوند.";
+ else if(q.includes("خرید")||q.includes("بفروشم")||q.includes("فروش"))a="نمی‌توان با یک شاخص تصمیم قطعی گرفت. روند، حجم، نوسان، افق زمانی و ریسک را بررسی کن و فقط بر اساس این ابزار تصمیم نگیر.";
+ else if(q.includes("میانگین")||q.includes("moving average"))a="میانگین متحرک، میانگین قیمت در تعداد مشخصی از دوره‌هاست و برای هموار کردن نوسانات استفاده می‌شود. این نسخه هنوز تاریخچه کافی برای محاسبه میانگین متحرک بازار ندارد.";
+ else if(q.includes("بلاکچین"))a="بلاکچین نوعی دفترکل دیجیتال توزیع‌شده است که تراکنش‌ها را در بلوک‌های به‌هم‌پیوسته ثبت می‌کند.";
+ else if(q.includes("اتریوم"))a="اتریوم شبکه‌ای برای اجرای قراردادهای هوشمند و برنامه‌های غیرمتمرکز است. برای بررسی قیمتش، اتریوم را از بخش نمودار انتخاب کن.";
+ document.getElementById("answer").textContent=a;
 });
-window.onresize=()=>draw(prices);
-$('ask').onclick=()=>{
- const q=$('question').value.trim().toLowerCase();
- if(!q)return;
- let answer='در این نسخه دستیار محدود است و هنوز از مدل هوش مصنوعی واقعی استفاده نمی‌کند. هیچ شاخصی به‌تنهایی جهت بازار را تضمین نمی‌کند.';
- if(q.includes('rsi'))answer='RSI شاخصی بین صفر تا صد برای سنجش قدرت حرکت قیمت است. معمولاً بالای ۷۰ را محدوده داغ و زیر ۳۰ را محدوده فشار فروش می‌دانند؛ اما این اعداد به‌تنهایی سیگنال خرید یا فروش نیستند.';
- else if(q.includes('macd'))answer='MACD از میانگین‌های متحرک نمایی استفاده می‌کند تا مومنتوم و تغییر احتمالی روند را بررسی کند. آن را همراه حجم و ساختار قیمت ببین.';
- else if(q.includes('روند')||q.includes('تحلیل'))answer=$('analysis').textContent;
- else if(q.includes('بخر')||q.includes('بفروش')||q.includes('خرید')||q.includes('فروش'))answer='نمی‌توانم سود یا آینده قیمت را تضمین کنم. پیش از هر تصمیمی ریسک و احتمال ضرر را بررسی کن و صرفاً بر اساس یک شاخص تصمیم نگیر.';
- $('answer').textContent=answer;
-};
-$('question').addEventListener('keydown',e=>{if(e.key==='Enter')$('ask').click()});
-load();
-setInterval(load,60000);
+
+refreshPrices();
+setInterval(refreshPrices,60000);
 </script>
 </body>
 </html>
