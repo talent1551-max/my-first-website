@@ -104,7 +104,7 @@ function money(n){
 }
 
 async function getPrice(symbol){
- const url="https://api.nobitex.ir/v3/orderbook/"+encodeURIComponent(symbol);
+ const url="https://apiv2.nobitex.ir/v3/orderbook/"+encodeURIComponent(symbol);
  const response=await fetch(url);
  if(!response.ok) throw new Error("HTTP "+response.status);
  const data=await response.json();
